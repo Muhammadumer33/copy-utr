@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy UTR - Unique Transaction Reference</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0a1628;
+            --blue: #1a3a6e;
+            --accent: #f5a623;
+            --green: #22c55e;
+            --white: #ffffff;
+            --card-bg: #ffffff;
+            --text-muted: #6b7280;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Syne', sans-serif;
+            background: var(--navy);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(245,166,35,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245,166,35,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -200px; right: -200px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(26,58,110,0.6) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 560px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ─── BRAND HEADER ─── */
+        .brand {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(245,166,35,0.3);
+            border-radius: 50px;
+            padding: 8px 20px 8px 10px;
+            margin-bottom: 12px;
+        }
+
+        .brand-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), #e8831a);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 0 20px rgba(245,166,35,0.4);
+        }
+
+        .brand-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: 2px;
+        }
+
+        .brand-tagline {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* ─── SHARED VIEW (recipient sees this) ─── */
+        #sharedView {
+            display: none;
+        }
+
+        .recipient-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+            animation: cardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes cardReveal {
+            from { opacity: 0; transform: translateY(30px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+            padding: 32px 32px 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            bottom: -30px; right: -30px;
+            width: 120px; height: 120px;
+            border: 2px solid rgba(245,166,35,0.2);
+            border-radius: 50%;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; right: -60px;
+            width: 180px; height: 180px;
+            border: 2px solid rgba(245,166,35,0.1);
+            border-radius: 50%;
+        }
+
+        .greeting {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .recipient-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .card-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            padding: 28px 32px 32px;
+        }
+
+        .utr-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .utr-box {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .utr-box:hover {
+            border-color: #c7d2fe;
+        }
+
+        .utr-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 1px;
+            word-break: break-all;
+            line-height: 1.3;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(10,22,40,0.3);
+        }
+
+        .copy-btn:active { transform: translateY(0); }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+        }
+
+        .toast {
+            background: var(--green);
+            color: white;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 20px 0;
+        }
+
+        .amount-box {
+            background: linear-gradient(135deg, #fefce8, #fef9c3);
+            border: 2px solid #fde047;
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .amount-label-sm {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: #a16207;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .amount-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #854d0e;
+        }
+
+        .amount-currency {
+            font-size: 14px;
+            font-weight: 700;
+            color: #a16207;
+            margin-right: 4px;
+        }
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .security-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            flex-shrink: 0;
+        }
+
+        /* ─── EDITOR VIEW (creator sees this) ─── */
+        #editorView {
+            display: none;
+        }
+
+        .editor-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 36px 32px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .editor-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            color: var(--white);
+            transition: all 0.2s;
+        }
+
+        .field input::placeholder { color: rgba(255,255,255,0.2); }
+
+        .field input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(245,166,35,0.06);
+            box-shadow: 0 0 0 3px rgba(245,166,35,0.1);
+        }
+
+        .generate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent) 0%, #e8831a 100%);
+            color: var(--navy);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(245,166,35,0.35);
+        }
+
+        .link-output {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .link-output label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .link-box {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(245,166,35,0.3);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .link-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            flex: 1;
+            word-break: break-all;
+            line-height: 1.5;
+        }
+
+        .link-copy-btn {
+            background: rgba(245,166,35,0.15);
+            border: 1px solid rgba(245,166,35,0.4);
+            color: var(--accent);
+            border-radius: 7px;
+            padding: 8px 12px;
+            font-family: 'Syne', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .link-copy-btn:hover {
+            background: rgba(245,166,35,0.25);
+        }
+
+        .link-copy-btn.copied {
+            background: rgba(34,197,94,0.15);
+            border-color: rgba(34,197,94,0.4);
+            color: var(--green);
+        }
+
+        @media (max-width: 500px) {
+            .recipient-name { font-size: 24px; }
+            .utr-value { font-size: 17px; }
+            .card-header, .card-body { padding: 22px 20px; }
+            .editor-card { padding: 28px 20px; }
+            .copy-btn { padding: 10px 14px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="brand">
+        <div class="brand-badge">
+            <div class="brand-icon">✓</div>
+            <span class="brand-name">COPY UTR</span>
+        </div>
+        <div class="brand-tagline">Unique Transaction Reference</div>
+    </div>
+
+    <!-- ── RECIPIENT VIEW (when ?name=...&utr=... is in URL) ── -->
+    <div id="sharedView">
+        <div class="recipient-card">
+            <div class="card-header">
+                <div class="greeting">Transaction Reference For</div>
+                <div class="recipient-name" id="recipientName">—</div>
+                <div class="card-label">Verified UTR</div>
+            </div>
+            <div class="card-body">
+                <div id="amountSection" style="display:none; margin-bottom:16px;">
+                    <div class="utr-label">Amount</div>
+                    <div class="amount-box">
+                        <div>
+                            <div class="amount-label-sm">Payment Amount</div>
+                            <div class="amount-value"><span class="amount-currency">&#8377;</span><span id="recipientAmount">&#8212;</span></div>
+                        </div>
+                        <div style="font-size:28px;">&#128176;</div>
+                    </div>
+                </div>
+                <div class="utr-label">Your UTR Number</div>
+                <div class="utr-box">
+                    <div class="utr-value" id="recipientUTR">—</div>
+                    <button class="copy-btn" id="recipientCopyBtn">
+                        <span>📋</span> Copy
+                    </button>
+                </div>
+                <div class="toast" id="recipientToast">✓ Copied to clipboard!</div>
+                <div class="divider"></div>
+                <div class="security-note">
+                    <div class="security-dot"></div>
+                    This UTR is not stored — copy and use it immediately.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CREATOR / EDITOR VIEW (no URL params) ── -->
+    <div id="editorView">
+        <div class="editor-card">
+            <div class="editor-title">Generate a Shareable Link</div>
+
+            <div class="field">
+                <label>Recipient Name</label>
+                <input type="text" id="nameInput" placeholder="e.g. Muhammad Ali" autocomplete="off">
+            </div>
+
+            <div class="field">
+                <label>UTR Number</label>
+                <input type="text" id="utrInput" placeholder="e.g. 1234567891234567" autocomplete="off">
+            </div>
+
+            <div class="field">
+                <label>Amount (optional)</label>
+                <input type="text" id="amountInput" placeholder="e.g. 5000" autocomplete="off">
+            </div>
+
+            <button class="generate-btn" id="generateBtn">GENERATE LINK →</button>
+
+            <div class="link-output" id="linkOutput">
+                <label>Shareable Link</label>
+                <div class="link-box">
+                    <div class="link-text" id="generatedLink">—</div>
+                    <button class="link-copy-btn" id="linkCopyBtn">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function getParam(p) {
+        return new URLSearchParams(window.location.search).get(p) || '';
+    }
+
+    const name   = getParam('name');
+    const utr    = getParam('utr');
+    const amount = getParam('amount');
+
+    if (name && utr) {
+        // ── RECIPIENT MODE ──
+        document.getElementById('sharedView').style.display = 'block';
+        document.getElementById('recipientName').textContent = decodeURIComponent(name);
+        document.getElementById('recipientUTR').textContent  = decodeURIComponent(utr);
+        if (amount) {
+            document.getElementById('recipientAmount').textContent = decodeURIComponent(amount);
+            document.getElementById('amountSection').style.display = 'block';
+        }
+
+        document.getElementById('recipientCopyBtn').addEventListener('click', async () => {
+            const val = decodeURIComponent(utr);
+            const btn   = document.getElementById('recipientCopyBtn');
+            const toast = document.getElementById('recipientToast');
+            try { await navigator.clipboard.writeText(val); }
+            catch {
+                const t = document.createElement('textarea');
+                t.value = val;
+                document.body.appendChild(t);
+                t.select(); document.execCommand('copy');
+                document.body.removeChild(t);
+            }
+            btn.classList.add('copied');
+            btn.innerHTML = '✓ Copied!';
+            toast.classList.add('show');
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = '<span>📋</span> Copy';
+                toast.classList.remove('show');
+            }, 2500);
+        });
+
+    } else {
+        // ── CREATOR MODE ──
+        document.getElementById('editorView').style.display = 'block';
+
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const n = document.getElementById('nameInput').value.trim();
+            const u = document.getElementById('utrInput').value.trim();
+            if (!n || !u) { alert('Please enter both a name and UTR number.'); return; }
+
+            const a    = document.getElementById('amountInput').value.trim();
+            const base = window.location.href.split('?')[0];
+            let link = `${base}?name=${encodeURIComponent(n)}&utr=${encodeURIComponent(u)}`;
+            if (a) link += `&amount=${encodeURIComponent(a)}`;
+
+            document.getElementById('generatedLink').textContent = link;
+            document.getElementById('linkOutput').style.display = 'block';
+        });
+
+        document.getElementById('linkCopyBtn').addEventListener('click', async () => {
+            const link = document.getElementById('generatedLink').textContent;
+            const btn  = document.getElementById('linkCopyBtn');
+            try { await navigator.clipboard.writeText(link); }
+            catch {
+                const t = document.createElement('textarea');
+                t.value = link;
+                document.body.appendChild(t);
+                t.select(); document.execCommand('copy');
+                document.body.removeChild(t);
+            }
+            btn.classList.add('copied');
+            btn.textContent = '✓ Copied!';
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.textContent = 'Copy';
+            }, 2000);
+        });
+    }
+</script>
+</body>
+</html>
