@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Copy UTR - Unique Transaction Reference</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --navy: #0a1628;
@@ -16,7 +18,11 @@
             --text-muted: #6b7280;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Syne', sans-serif;
@@ -36,8 +42,8 @@
             position: fixed;
             inset: 0;
             background-image:
-                linear-gradient(rgba(245,166,35,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(245,166,35,0.05) 1px, transparent 1px);
+                linear-gradient(rgba(245, 166, 35, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 166, 35, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
             pointer-events: none;
         }
@@ -45,9 +51,11 @@
         body::after {
             content: '';
             position: fixed;
-            top: -200px; right: -200px;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(26,58,110,0.6) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(26, 58, 110, 0.6) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -68,20 +76,23 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(245,166,35,0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(245, 166, 35, 0.3);
             border-radius: 50px;
             padding: 8px 20px 8px 10px;
             margin-bottom: 12px;
         }
 
         .brand-icon {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             background: linear-gradient(135deg, var(--accent), #e8831a);
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
-            box-shadow: 0 0 20px rgba(245,166,35,0.4);
+            box-shadow: 0 0 20px rgba(245, 166, 35, 0.4);
         }
 
         .brand-name {
@@ -95,7 +106,7 @@
         .brand-tagline {
             font-family: 'Space Mono', monospace;
             font-size: 11px;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             letter-spacing: 3px;
             text-transform: uppercase;
         }
@@ -109,13 +120,20 @@
             background: var(--white);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
             animation: cardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
         @keyframes cardReveal {
-            from { opacity: 0; transform: translateY(30px) scale(0.97); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .card-header {
@@ -128,25 +146,29 @@
         .card-header::before {
             content: '';
             position: absolute;
-            bottom: -30px; right: -30px;
-            width: 120px; height: 120px;
-            border: 2px solid rgba(245,166,35,0.2);
+            bottom: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            border: 2px solid rgba(245, 166, 35, 0.2);
             border-radius: 50%;
         }
 
         .card-header::after {
             content: '';
             position: absolute;
-            bottom: -60px; right: -60px;
-            width: 180px; height: 180px;
-            border: 2px solid rgba(245,166,35,0.1);
+            bottom: -60px;
+            right: -60px;
+            width: 180px;
+            height: 180px;
+            border: 2px solid rgba(245, 166, 35, 0.1);
             border-radius: 50%;
         }
 
         .greeting {
             font-family: 'Space Mono', monospace;
             font-size: 11px;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
             letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 6px;
@@ -173,7 +195,7 @@
             padding: 28px 32px 32px;
         }
 
-        .utr-label {
+        .upi-label {
             font-family: 'Space Mono', monospace;
             font-size: 10px;
             color: var(--text-muted);
@@ -230,10 +252,12 @@
 
         .copy-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(10,22,40,0.3);
+            box-shadow: 0 8px 25px rgba(10, 22, 40, 0.3);
         }
 
-        .copy-btn:active { transform: translateY(0); }
+        .copy-btn:active {
+            transform: translateY(0);
+        }
 
         .copy-btn.copied {
             background: linear-gradient(135deg, #16a34a, #15803d);
@@ -310,7 +334,8 @@
         }
 
         .security-dot {
-            width: 6px; height: 6px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: var(--green);
             flex-shrink: 0;
@@ -322,18 +347,18 @@
         }
 
         .editor-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 36px 32px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
         }
 
         .editor-title {
             font-size: 13px;
             font-weight: 700;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 24px;
@@ -347,7 +372,7 @@
             display: block;
             font-family: 'Space Mono', monospace;
             font-size: 11px;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
             letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: 8px;
@@ -355,8 +380,8 @@
 
         .field input {
             width: 100%;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 10px;
             padding: 14px 16px;
             font-family: 'Space Mono', monospace;
@@ -365,13 +390,15 @@
             transition: all 0.2s;
         }
 
-        .field input::placeholder { color: rgba(255,255,255,0.2); }
+        .field input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
 
         .field input:focus {
             outline: none;
             border-color: var(--accent);
-            background: rgba(245,166,35,0.06);
-            box-shadow: 0 0 0 3px rgba(245,166,35,0.1);
+            background: rgba(245, 166, 35, 0.06);
+            box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.1);
         }
 
         .generate-btn {
@@ -392,7 +419,7 @@
 
         .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(245,166,35,0.35);
+            box-shadow: 0 12px 30px rgba(245, 166, 35, 0.35);
         }
 
         .link-output {
@@ -403,7 +430,7 @@
         .link-output label {
             font-family: 'Space Mono', monospace;
             font-size: 11px;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             letter-spacing: 2px;
             text-transform: uppercase;
             display: block;
@@ -411,8 +438,8 @@
         }
 
         .link-box {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(245,166,35,0.3);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(245, 166, 35, 0.3);
             border-radius: 10px;
             padding: 12px 14px;
             display: flex;
@@ -423,15 +450,15 @@
         .link-text {
             font-family: 'Space Mono', monospace;
             font-size: 12px;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             flex: 1;
             word-break: break-all;
             line-height: 1.5;
         }
 
         .link-copy-btn {
-            background: rgba(245,166,35,0.15);
-            border: 1px solid rgba(245,166,35,0.4);
+            background: rgba(245, 166, 35, 0.15);
+            border: 1px solid rgba(245, 166, 35, 0.4);
             color: var(--accent);
             border-radius: 7px;
             padding: 8px 12px;
@@ -445,183 +472,202 @@
         }
 
         .link-copy-btn:hover {
-            background: rgba(245,166,35,0.25);
+            background: rgba(245, 166, 35, 0.25);
         }
 
         .link-copy-btn.copied {
-            background: rgba(34,197,94,0.15);
-            border-color: rgba(34,197,94,0.4);
+            background: rgba(34, 197, 94, 0.15);
+            border-color: rgba(34, 197, 94, 0.4);
             color: var(--green);
         }
 
         @media (max-width: 500px) {
-            .recipient-name { font-size: 24px; }
-            .utr-value { font-size: 17px; }
-            .card-header, .card-body { padding: 22px 20px; }
-            .editor-card { padding: 28px 20px; }
-            .copy-btn { padding: 10px 14px; font-size: 13px; }
+            .recipient-name {
+                font-size: 24px;
+            }
+
+            .utr-value {
+                font-size: 17px;
+            }
+
+            .card-header,
+            .card-body {
+                padding: 22px 20px;
+            }
+
+            .editor-card {
+                padding: 28px 20px;
+            }
+
+            .copy-btn {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
+
 <body>
-<div class="container">
+    <div class="container">
 
-    <div class="brand">
-        <div class="brand-badge">
-            <div class="brand-icon">✓</div>
-            <span class="brand-name">COPY UTR</span>
-        </div>
-        <div class="brand-tagline">Unique Transaction Reference</div>
-    </div>
-
-    <!-- ── RECIPIENT VIEW (when ?name=...&utr=... is in URL) ── -->
-    <div id="sharedView">
-        <div class="recipient-card">
-            <div class="card-header">
-                <div class="greeting">Transaction Reference For</div>
-                <div class="recipient-name" id="recipientName">—</div>
-                <div class="card-label">Verified UTR</div>
+        <div class="brand">
+            <div class="brand-badge">
+                <div class="brand-icon">✓</div>
+                <span class="brand-name">COPY UTR</span>
             </div>
-            <div class="card-body">
-                <div id="amountSection" style="display:none; margin-bottom:16px;">
-                    <div class="utr-label">Amount</div>
-                    <div class="amount-box">
-                        <div>
-                            <div class="amount-label-sm">Payment Amount</div>
-                            <div class="amount-value"><span class="amount-currency">&#8377;</span><span id="recipientAmount">&#8212;</span></div>
+            <div class="brand-tagline">Unique Transaction Reference</div>
+        </div>
+
+        <!-- ── RECIPIENT VIEW (when ?name=...&utr=... is in URL) ── -->
+        <div id="sharedView">
+            <div class="recipient-card">
+                <div class="card-header">
+                    <div class="greeting">Transaction Reference For</div>
+                    <div class="recipient-name" id="recipientName">—</div>
+                    <div class="card-label">Verified UPI</div>
+                </div>
+                <div class="card-body">
+                    <div id="amountSection" style="display:none; margin-bottom:16px;">
+                        <div class="upi-label">Amount</div>
+                        <div class="amount-box">
+                            <div>
+                                <div class="amount-label-sm">Payment Amount</div>
+                                <div class="amount-value"><span class="amount-currency">&#8377;</span><span
+                                        id="recipientAmount">&#8212;</span></div>
+                            </div>
+                            <div style="font-size:28px;">&#128176;</div>
                         </div>
-                        <div style="font-size:28px;">&#128176;</div>
+                    </div>
+                    <div class="upi-label">Your UPI Number</div>
+                    <div class="utr-box">
+                        <div class="utr-value" id="recipientUTR">—</div>
+                        <button class="copy-btn" id="recipientCopyBtn">
+                            <span>📋</span> Copy
+                        </button>
+                    </div>
+                    <div class="toast" id="recipientToast">✓ Copied to clipboard!</div>
+                    <div class="divider"></div>
+                    <div class="security-note">
+                        <div class="security-dot"></div>
+                        This UPI number is not stored — copy and use it immediately.
                     </div>
                 </div>
-                <div class="utr-label">Your UTR Number</div>
-                <div class="utr-box">
-                    <div class="utr-value" id="recipientUTR">—</div>
-                    <button class="copy-btn" id="recipientCopyBtn">
-                        <span>📋</span> Copy
-                    </button>
+            </div>
+        </div>
+
+        <!-- ── CREATOR / EDITOR VIEW (no URL params) ── -->
+        <div id="editorView">
+            <div class="editor-card">
+                <div class="editor-title">Generate a Shareable Link</div>
+
+                <div class="field">
+                    <label>Recipient Name</label>
+                    <input type="text" id="nameInput" placeholder="e.g. Muhammad Ali" autocomplete="off">
                 </div>
-                <div class="toast" id="recipientToast">✓ Copied to clipboard!</div>
-                <div class="divider"></div>
-                <div class="security-note">
-                    <div class="security-dot"></div>
-                    This UTR is not stored — copy and use it immediately.
+
+                <div class="field">
+                    <label>UPI Number</label>
+                    <input type="text" id="utrInput" placeholder="e.g. 1234567891234567" autocomplete="off">
+                </div>
+
+                <div class="field">
+                    <label>Amount (optional)</label>
+                    <input type="text" id="amountInput" placeholder="e.g. 5000" autocomplete="off">
+                </div>
+
+                <button class="generate-btn" id="generateBtn">GENERATE LINK →</button>
+
+                <div class="link-output" id="linkOutput">
+                    <label>Shareable Link</label>
+                    <div class="link-box">
+                        <div class="link-text" id="generatedLink">—</div>
+                        <button class="link-copy-btn" id="linkCopyBtn">Copy</button>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-    <!-- ── CREATOR / EDITOR VIEW (no URL params) ── -->
-    <div id="editorView">
-        <div class="editor-card">
-            <div class="editor-title">Generate a Shareable Link</div>
-
-            <div class="field">
-                <label>Recipient Name</label>
-                <input type="text" id="nameInput" placeholder="e.g. Muhammad Ali" autocomplete="off">
-            </div>
-
-            <div class="field">
-                <label>UTR Number</label>
-                <input type="text" id="utrInput" placeholder="e.g. 1234567891234567" autocomplete="off">
-            </div>
-
-            <div class="field">
-                <label>Amount (optional)</label>
-                <input type="text" id="amountInput" placeholder="e.g. 5000" autocomplete="off">
-            </div>
-
-            <button class="generate-btn" id="generateBtn">GENERATE LINK →</button>
-
-            <div class="link-output" id="linkOutput">
-                <label>Shareable Link</label>
-                <div class="link-box">
-                    <div class="link-text" id="generatedLink">—</div>
-                    <button class="link-copy-btn" id="linkCopyBtn">Copy</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    function getParam(p) {
-        return new URLSearchParams(window.location.search).get(p) || '';
-    }
-
-    const name   = getParam('name');
-    const utr    = getParam('utr');
-    const amount = getParam('amount');
-
-    if (name && utr) {
-        // ── RECIPIENT MODE ──
-        document.getElementById('sharedView').style.display = 'block';
-        document.getElementById('recipientName').textContent = decodeURIComponent(name);
-        document.getElementById('recipientUTR').textContent  = decodeURIComponent(utr);
-        if (amount) {
-            document.getElementById('recipientAmount').textContent = decodeURIComponent(amount);
-            document.getElementById('amountSection').style.display = 'block';
+    <script>
+        function getParam(p) {
+            return new URLSearchParams(window.location.search).get(p) || '';
         }
 
-        document.getElementById('recipientCopyBtn').addEventListener('click', async () => {
-            const val = decodeURIComponent(utr);
-            const btn   = document.getElementById('recipientCopyBtn');
-            const toast = document.getElementById('recipientToast');
-            try { await navigator.clipboard.writeText(val); }
-            catch {
-                const t = document.createElement('textarea');
-                t.value = val;
-                document.body.appendChild(t);
-                t.select(); document.execCommand('copy');
-                document.body.removeChild(t);
+        const name = getParam('name');
+        const utr = getParam('utr');
+        const amount = getParam('amount');
+
+        if (name && utr) {
+            // ── RECIPIENT MODE ──
+            document.getElementById('sharedView').style.display = 'block';
+            document.getElementById('recipientName').textContent = decodeURIComponent(name);
+            document.getElementById('recipientUTR').textContent = decodeURIComponent(utr);
+            if (amount) {
+                document.getElementById('recipientAmount').textContent = decodeURIComponent(amount);
+                document.getElementById('amountSection').style.display = 'block';
             }
-            btn.classList.add('copied');
-            btn.innerHTML = '✓ Copied!';
-            toast.classList.add('show');
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                btn.innerHTML = '<span>📋</span> Copy';
-                toast.classList.remove('show');
-            }, 2500);
-        });
 
-    } else {
-        // ── CREATOR MODE ──
-        document.getElementById('editorView').style.display = 'block';
+            document.getElementById('recipientCopyBtn').addEventListener('click', async () => {
+                const val = decodeURIComponent(utr);
+                const btn = document.getElementById('recipientCopyBtn');
+                const toast = document.getElementById('recipientToast');
+                try { await navigator.clipboard.writeText(val); }
+                catch {
+                    const t = document.createElement('textarea');
+                    t.value = val;
+                    document.body.appendChild(t);
+                    t.select(); document.execCommand('copy');
+                    document.body.removeChild(t);
+                }
+                btn.classList.add('copied');
+                btn.innerHTML = '✓ Copied!';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<span>📋</span> Copy';
+                    toast.classList.remove('show');
+                }, 2500);
+            });
 
-        document.getElementById('generateBtn').addEventListener('click', () => {
-            const n = document.getElementById('nameInput').value.trim();
-            const u = document.getElementById('utrInput').value.trim();
-            if (!n || !u) { alert('Please enter both a name and UTR number.'); return; }
+        } else {
+            // ── CREATOR MODE ──
+            document.getElementById('editorView').style.display = 'block';
 
-            const a    = document.getElementById('amountInput').value.trim();
-            const base = window.location.href.split('?')[0];
-            let link = `${base}?name=${encodeURIComponent(n)}&utr=${encodeURIComponent(u)}`;
-            if (a) link += `&amount=${encodeURIComponent(a)}`;
+            document.getElementById('generateBtn').addEventListener('click', () => {
+                const n = document.getElementById('nameInput').value.trim();
+                const u = document.getElementById('utrInput').value.trim();
+                if (!n || !u) { alert('Please enter both a name and UPI number.'); return; }
 
-            document.getElementById('generatedLink').textContent = link;
-            document.getElementById('linkOutput').style.display = 'block';
-        });
+                const a = document.getElementById('amountInput').value.trim();
+                const base = window.location.href.split('?')[0];
+                let link = `${base}?name=${encodeURIComponent(n)}&utr=${encodeURIComponent(u)}`;
+                if (a) link += `&amount=${encodeURIComponent(a)}`;
 
-        document.getElementById('linkCopyBtn').addEventListener('click', async () => {
-            const link = document.getElementById('generatedLink').textContent;
-            const btn  = document.getElementById('linkCopyBtn');
-            try { await navigator.clipboard.writeText(link); }
-            catch {
-                const t = document.createElement('textarea');
-                t.value = link;
-                document.body.appendChild(t);
-                t.select(); document.execCommand('copy');
-                document.body.removeChild(t);
-            }
-            btn.classList.add('copied');
-            btn.textContent = '✓ Copied!';
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                btn.textContent = 'Copy';
-            }, 2000);
-        });
-    }
-</script>
+                document.getElementById('generatedLink').textContent = link;
+                document.getElementById('linkOutput').style.display = 'block';
+            });
+
+            document.getElementById('linkCopyBtn').addEventListener('click', async () => {
+                const link = document.getElementById('generatedLink').textContent;
+                const btn = document.getElementById('linkCopyBtn');
+                try { await navigator.clipboard.writeText(link); }
+                catch {
+                    const t = document.createElement('textarea');
+                    t.value = link;
+                    document.body.appendChild(t);
+                    t.select(); document.execCommand('copy');
+                    document.body.removeChild(t);
+                }
+                btn.classList.add('copied');
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+    </script>
 </body>
+
 </html>
